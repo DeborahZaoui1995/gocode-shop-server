@@ -96,7 +96,7 @@ app.put("/products/:id", (req, res) => {
     //   field ? (updatedFields[field] = req.body[Object.keys(req.body)[i]]) : null;
     //   i++
     // }
-    Product.findByIdAndUpdate(id, req.body, (err, product) => {
+    Product.findByIdAndUpdate(id, req.body,{ upsert: true }, (err, product) => {
       res.send(product);
     });
   } catch (error) {
@@ -111,6 +111,7 @@ app.delete("/products/:id", (req, res) => {
 
     Product.findByIdAndDelete(id, (err, product) => {
       res.send(product);
+    
     });
   } catch (error) {
     res.send("Not found");
