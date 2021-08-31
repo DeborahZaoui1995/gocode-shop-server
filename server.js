@@ -8,6 +8,9 @@ const app = express();
 app.use(express.json());
 app.use(cors());
 
+require("dotenv").config();
+
+const {DB_USER, DB_PASS, DB_HOST, DB_NAME} = process.env;
 
 const productSchema = new mongoose.Schema({
   title: String,
@@ -145,7 +148,7 @@ initProducts();
 
 //connection to the database
 mongoose.connect(
-  "mongodb+srv://deborah:souffan@cluster0.bcwlf.mongodb.net/gocode_shop?retryWrites=true&w=majority",
+  `mongodb+srv://${DB_USER}:${DB_PASS}@${DB_HOST}/${DB_NAME}?retryWrites=true&w=majority`,
   { useNewUrlParser: true, useUnifiedTopology: true },
   (error) => {
     console.log(error);
