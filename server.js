@@ -2,10 +2,12 @@ const fs = require("fs");
 const express = require("express");
 const { v4: uuidv4 } = require("uuid");
 const mongoose = require("mongoose");
-
+const cors = require('cors');
 
 const app = express();
 app.use(express.json());
+app.use(cors());
+
 
 const productSchema = new mongoose.Schema({
   title: String,
@@ -79,8 +81,10 @@ app.post("/products", (req, res) => {
       image: image,
     });
 
-    product.save();
-    res.send("OK!");
+    product.save((err,data) => {
+      res.send(data);
+    });
+   
   } catch (error) {
     res.send("Not added");
   }
@@ -137,9 +141,11 @@ function initProducts() {
 
 initProducts();
 
+
+
 //connection to the database
 mongoose.connect(
-  "mongodb://localhost/gocode_shop",
+  "mongodb+srv://deborah:souffan@cluster0.bcwlf.mongodb.net/gocode_shop?retryWrites=true&w=majority",
   { useNewUrlParser: true, useUnifiedTopology: true },
   (error) => {
     console.log(error);
