@@ -152,7 +152,7 @@ mongoose.connect(
   { useNewUrlParser: true, useUnifiedTopology: true },
   (error) => {
     console.log(error);
-    app.listen(8000);
+    app.listen(process.env.PORT || 8000);
   }
 );
 
