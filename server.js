@@ -9,6 +9,8 @@ app.use(express.json());
 app.use(cors());
 
 require("dotenv").config();
+app.use(express.static('client/build'));
+
 
 const {DB_USER, DB_PASS, DB_HOST, DB_NAME} = process.env;
 
@@ -25,7 +27,7 @@ const Product = mongoose.model("Product", productSchema);
 
 //Get all products / Get Product according to min, max of the slider and category
 //Get Product according to title
-app.get("/products", (req, res) => {
+app.get("/api/products", (req, res) => {
   try {
     const { min, max, category, title } = req.query;
 
@@ -58,7 +60,7 @@ app.get("/products", (req, res) => {
 });
 
 //Get Product By Id
-app.get("/products/:id", (req, res) => {
+app.get("/api/products/:id", (req, res) => {
   try {
     const { id } = req.params;
 
@@ -72,7 +74,7 @@ app.get("/products/:id", (req, res) => {
 });
 
 //Add Product
-app.post("/products", (req, res) => {
+app.post("/api/products", (req, res) => {
   try {
     const { title, price, description, category, image } = req.body;
 
@@ -94,7 +96,7 @@ app.post("/products", (req, res) => {
 });
 
 //Update product
-app.put("/products/:id", (req, res) => {
+app.put("/api/products/:id", (req, res) => {
   try {
     const { id } = req.params;
     // const updatedFields = {};
@@ -112,7 +114,7 @@ app.put("/products/:id", (req, res) => {
 });
 
 //Delete Product
-app.delete("/products/:id", (req, res) => {
+app.delete("/api/products/:id", (req, res) => {
   try {
     const { id } = req.params;
 
@@ -141,6 +143,11 @@ function initProducts() {
     }
   });
 }
+
+app.get('*', (req, res) => {
+  res.sendFile(__dirname+'/client/build/index.html');
+});
+
 
 initProducts();
 
